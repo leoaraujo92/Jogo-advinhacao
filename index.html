@@ -36,7 +36,7 @@
     <div class="form">
       <label for="guessField">Enter a guess: </label>
       <input type="number" min="1" max="100" required id="guessField" class="guessField">
-      <input type="submit" onclick="checkGuess()" value="Submit guess" class="guessSubmit">
+      <input type="submit" value="Submit guess" id="guessSubimit">
     </div>
 
     <div class="resultParas">
@@ -53,16 +53,49 @@
       var lastResult = document.querySelector('.lastResult')
       var lowOrHi = document.querySelector('.lowOrHi')
 
-      var guessSubmit = document.querySelector('.guessSubimit')
+      var guessSubmit = document.querySelector('#guessSubimit')
       var guessField = document.querySelector('.guessField')
 
       var countGuess = 1;
       var restartButton;
 
+      function restartGame() {
+        countGuess = 1
+
+        var restartParas = document.querySelectorAll('.resultParas p')
+        for(var i = 0; i < restartParas.length; i++){
+          restartParas[i].textContent = ''
+        }
+      
+        restartButton.parentNode.removeChild(restartButton)
+
+        guessField.disabled = false
+        guessSubmit.disabled = false
+        guessField.value = ''
+        guessField.focus()
+
+        lastResult.style.backgroundColor = 'White'
+
+        radomNumber = Math.floor(Math.random() * 100) + 1
+ 
+      }
+
+      function gameOver(){
+
+        guessField.disabled = true
+        guessSubmit.disabled = true
+        restartButton = document.createElement('button')
+        restartButton.textContent = 'Iniciar novo jogo'
+        document.body.appendChild(restartButton)
+        restartButton.addEventListener('click', restartGame)
+        
+      }
+
       function checkGuess(){
 
         var userGuess = Number(guessField.value);
 
+        console.log(radomNumber)
         if(countGuess === 1){
             guesses.textContent = 'Palpites anteriores ';
         }
@@ -94,7 +127,8 @@
 
       }
 
-      console.log(radomNumber);
+      console.log(guessSubmit)
+      guessSubmit.addEventListener('click', checkGuess)
 
     </script>
   </body>
